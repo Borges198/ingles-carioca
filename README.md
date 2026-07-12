@@ -4,7 +4,7 @@ Página estática para brasileiros estudarem frases comuns em inglês por situa�
 
 ## Objetivo
 
-O projeto reúne frases revisadas com tradução natural, pronúncia aproximada, áudio, fala conectada, palavras fortes, dicas de pronúncia, favoritos, progresso, modo de estudo, diálogos e observações culturais.
+O projeto reúne frases revisadas com tradução natural, pronúncia aproximada, áudio, fala conectada, palavras fortes, dicas de pronúncia, favoritos, progresso, modo de estudo, diálogos, aulas guiadas e observações culturais.
 
 ## Stack
 
@@ -34,6 +34,7 @@ styles.css                 Layout, responsividade e estados visuais.
 app.js                     Renderização, busca, filtros, modo de estudo e eventos.
 data/phrases.js            Dados estruturados das frases.
 data/dialogues.js          Diálogos demonstrativos.
+data/lessons.js            Catálogo pedagógico com níveis, aulas e referências por IDs.
 js/speech.js               Integração com speechSynthesis.
 js/storage.js              Favoritos e progresso no localStorage.
 ```
@@ -41,12 +42,24 @@ js/storage.js              Favoritos e progresso no localStorage.
 ## Estado atual
 
 ```text
-63 frases
-7 diálogos
+93 frases
+10 diálogos
 9 categorias
+1 nível pedagógico inicial
+3 aulas guiadas
 sem backend
 sem autenticação
 sem dependências externas
+```
+
+## Experiências
+
+```text
+Curso guiado
+→ percurso recomendado por níveis e aulas
+
+Consulta livre
+→ busca, filtros, favoritos, estudadas e modo de estudo
 ```
 
 ## Limitações
@@ -60,7 +73,23 @@ sem dependências externas
 
 ## Próximos passos
 
-- Expansão gradual de conteúdo.
-- Revisão linguística por ciclo.
-- Novos módulos.
-- Melhoria futura do modo de estudo.
+- Progresso por aula.
+- Conclusão de aulas.
+- Revisão pedagógica por uso real.
+- Expansão gradual do percurso.
+
+## Publicação estática
+
+Gere o diretório de publicação com:
+
+```bash
+bash scripts/build-static.sh
+```
+
+O diretório a ser publicado é:
+
+```text
+dist/
+```
+
+A produção futura usará a branch `main`. A branch `expansao-viagens-hotel` permanece como ambiente de desenvolvimento. A aplicação continua estática, sem banco de dados e sem backend.
