@@ -1,10 +1,10 @@
-# Checkpoint Ciclo 2
+# Checkpoint Ciclos 2 a 5
 
 ## Identificação
 
 ```text
 Projeto: Inglês Falado na Prática
-Checkpoint: conclusão dos Ciclos 1, 1A, 2, 2A e 2B
+Checkpoint: conclusão dos Ciclos 1, 1A, 2, 2A, 2B, 4, 4A e 5
 ```
 
 ## Objetivo do projeto
@@ -131,3 +131,55 @@ expansão controlada de módulos de viagem, hotel e restaurante
 ```
 
 Essa expansão não foi executada neste ciclo.
+
+## Expansão de viagens, hotel e restaurante
+
+```text
+Branch: expansao-viagens-hotel
+Commit funcional: b40872e
+Frases antes: 63
+Frases adicionadas: 30
+Frases atuais: 93
+Diálogos antes: 7
+Diálogos adicionados: 3
+Diálogos atuais: 10
+```
+
+Distribuição da expansão:
+
+```text
+Viagens e direções: 10 novas
+Hotel: 10 novas
+Restaurante: 10 novas
+```
+
+Diálogos adicionados:
+
+```text
+airport-flight-information
+hotel-check-in-expanded
+restaurant-ordering-meal
+```
+
+Correções da revisão independente:
+
+- Fluxo natural no diálogo de check-in.
+- Tonicidade inicial de address como substantivo.
+- Confirmação de que notes já eram renderizadas corretamente.
+- Preservação de app.js.
+
+Homologação local:
+
+- Busca aprovada.
+- Filtros aprovados.
+- Favoritos e progresso persistentes.
+- Modo de estudo aprovado.
+- Observações de uso aprovadas.
+- Responsividade aprovada em 320, 375, 768 e 1024 px.
+- Console sem erros críticos.
+- Web Speech API e voz Google US English detectadas.
+
+Ressalva:
+
+A inteligibilidade do áudio ainda precisa de escuta humana em navegador normal.
+O ambiente automatizado confirmou disponibilidade e integração, mas não substitui avaliação auditiva humana.
