@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Inglês Falado na Prática</title>
+    <meta
+      name="description"
+      content="Curso estático de frases em inglês para brasileiros com áudio, pronúncia, favoritos e progresso."
+    >
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230b6b61'/%3E%3Ctext x='32' y='40' font-family='Arial,sans-serif' font-size='26' font-weight='700' text-anchor='middle' fill='white'%3EEN%3C/text%3E%3C/svg%3E"
+    >
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#phrases-list">Pular para as frases</a>
+
+    <header class="site-header">
+      <div class="container hero">
+        <p class="eyebrow">Curso estático de frases reais</p>
+        <h1>Inglês Falado na Prática</h1>
+        <p class="hero-text">
+          Aprenda frases reais, escute, repita e pratique o ritmo natural do inglês.
+        </p>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="study-guide" aria-labelledby="study-guide-title">
+        <div>
+          <h2 id="study-guide-title">Como estudar</h2>
+          <ol class="steps">
+            <li>Escute a frase.</li>
+            <li>Leia em voz alta.</li>
+            <li>Repita em blocos.</li>
+            <li>Faça shadowing junto com o áudio.</li>
+            <li>Esconda a tradução.</li>
+            <li>Fale sem olhar.</li>
+          </ol>
+        </div>
+        <aside class="pronunciation-note" aria-label="Aviso de pronúncia">
+          <strong>Pronúncia prática</strong>
+          <p>
+            A escrita da pronúncia é apenas um apoio. Use o áudio como referência principal.
+          </p>
+          <p>
+            Não tente pronunciar todas as palavras com a mesma força. No inglês natural,
+            algumas palavras ficam fortes e outras ficam reduzidas.
+          </p>
+          <p>
+            H e TH não possuem equivalentes exatos em português e precisam ser praticados
+            pela posição da boca e da língua.
+          </p>
+        </aside>
+      </section>
+
+      <section class="progress-panel" aria-label="Painel de progresso">
+        <div class="metric">
+          <span class="metric-value" id="studied-count">0</span>
+          <span class="metric-label">estudadas</span>
+        </div>
+        <div class="metric">
+          <span class="metric-value" id="total-count">0</span>
+          <span class="metric-label">frases</span>
+        </div>
+        <div class="metric">
+          <span class="metric-value" id="progress-percent">0%</span>
+          <span class="metric-label">concluído</span>
+        </div>
+        <div class="metric">
+          <span class="metric-value" id="favorite-count">0</span>
+          <span class="metric-label">favoritas</span>
+        </div>
+      </section>
+
+      <section class="controls" aria-labelledby="filters-title">
+        <div class="section-heading">
+          <h2 id="filters-title">Prática rápida</h2>
+          <p id="audio-status" class="status-message" role="status"></p>
+        </div>
+
+        <div class="control-grid">
+          <div class="field">
+            <label for="search-input">Pesquisar</label>
+            <input
+              id="search-input"
+              type="search"
+              placeholder="Busque por inglês, português ou situação"
+              autocomplete="off"
+            >
+          </div>
+
+          <div class="field">
+            <label for="category-filter">Categoria</label>
+            <select id="category-filter"></select>
+          </div>
+
+          <div class="field">
+            <label for="study-filter">Status</label>
+            <select id="study-filter">
+              <option value="all">Todas</option>
+              <option value="unstudied">Não estudadas</option>
+              <option value="studied">Estudadas</option>
+              <option value="favorites">Favoritas</option>
+            </select>
+          </div>
+
+          <button class="primary-action" id="open-study-mode" type="button">
+            Abrir modo de estudo
+          </button>
+        </div>
+      </section>
+
+      <section class="study-mode" id="study-mode" aria-labelledby="study-mode-title" hidden>
+        <div class="study-mode-header">
+          <div>
+            <p class="eyebrow">Uma frase por vez</p>
+            <h2 id="study-mode-title" tabindex="-1">Modo de estudo</h2>
+          </div>
+          <button id="close-study-mode" type="button" class="ghost-button">Fechar</button>
+        </div>
+        <article class="study-card" id="study-card"></article>
+      </section>
+
+      <section class="phrases-section" aria-labelledby="phrases-title">
+        <div class="section-heading">
+          <h2 id="phrases-title">Frases</h2>
+          <p id="results-message" class="status-message" role="status"></p>
+        </div>
+        <div class="phrase-list" id="phrases-list"></div>
+      </section>
+
+      <section class="dialogues-section" aria-labelledby="dialogues-title">
+        <div class="section-heading">
+          <h2 id="dialogues-title">Conversas reais</h2>
+          <p>Diálogos curtos para praticar as frases em sequência natural.</p>
+        </div>
+        <div class="dialogue-list" id="dialogue-list"></div>
+      </section>
+    </main>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
