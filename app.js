@@ -1,9 +1,12 @@
 import { phrases, categories } from "./data/phrases.js";
 import { dialogues } from "./data/dialogues.js";
+import { courseLevels } from "./data/lessons.js";
 import { reconcileStoredIds, toggleFavorite, toggleStudied } from "./js/storage.js";
 import { isSpeechSupported, loadVoices, speak, stopSpeech } from "./js/speech.js";
 
 const reconciledStorage = reconcileStoredIds(phrases.map((phrase) => phrase.id));
+const phraseById = new Map(phrases.map((phrase) => [phrase.id, phrase]));
+const dialogueById = new Map(dialogues.map((dialogue) => [dialogue.id, dialogue]));
 
 const state = {
   query: "",
@@ -15,6 +18,8 @@ const state = {
   hiddenTranslations: new Set(),
   dialogueTranslations: new Set(),
   studyModeOpen: false,
+  activeCourseLessonId: null,
+  lastCourseLessonTrigger: null,
   studyIndex: 0,
   studyTranslationVisible: false,
   lastStudyTrigger: null
@@ -24,6 +29,8 @@ const els = {
   search: document.querySelector("#search-input"),
   category: document.querySelector("#category-filter"),
   studyFilter: document.querySelector("#study-filter"),
+  courseLevels: document.querySelector("#course-levels"),
+  courseLessonPanel: document.querySelector("#course-lesson-panel"),
   phraseList: document.querySelector("#phrases-list"),
   dialogueList: document.querySelector("#dialogue-list"),
   resultsMessage: document.querySelector("#results-message"),
@@ -126,6 +133,179 @@ function renderCategoryOptions() {
     option.textContent = category;
     els.category.append(option);
   });
+}
+
+function findLessonById(lessonId) {
+  for (const level of courseLevels) {
+    const lesson = level.lessons.find((item) => item.id === lessonId);
+    if (lesson) return { level, lesson };
+  }
+
+  return null;
+}
+
+function renderCourseCatalog() {
+  els.courseLevels.replaceChildren();
+
+  courseLevels.forEach((level) => {
+    const section = createElement("section", "course-level");
+    section.setAttribute("aria-labelledby", `course-level-${level.id}`);
+
+    const header = createElement("div", "course-level-header");
+    const title = createElement("h3", "", level.title);
+    title.id = `course-level-${level.id}`;
+    header.append(title, createElement("p", "", level.description));
+    section.append(header);
+
+    const lessons = createElement("div", "lesson-grid");
+    level.lessons.forEach((lesson) => {
+      const card = createElement("article", "lesson-card");
+      const openButton = createButton(
+        "Abrir aula",
+        "secondary-button lesson-open-button",
+        (event) => openCourseLesson(lesson.id, event.currentTarget),
+        `Abrir aula ${lesson.order}: ${lesson.title}`
+      );
+      card.append(
+        createElement("p", "lesson-order", `Aula ${lesson.order}`),
+        createElement("h4", "lesson-title", lesson.title),
+        createElement("p", "lesson-objective", lesson.objective),
+        createElement(
+          "p",
+          "lesson-meta",
+          `${lesson.phraseIds.length} frases · ${lesson.dialogueIds.length} diálogos`
+        ),
+        openButton
+      );
+      lessons.append(card);
+    });
+
+    section.append(lessons);
+    els.courseLevels.append(section);
+  });
+}
+
+function openCourseLesson(lessonId, trigger) {
+  if (state.activeCourseLessonId && state.activeCourseLessonId !== lessonId) {
+    stopSpeech();
+  }
+
+  state.activeCourseLessonId = lessonId;
+  state.lastCourseLessonTrigger = trigger;
+  renderCourseLesson();
+  els.courseLessonPanel.hidden = false;
+  els.courseLessonPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+  document.querySelector("#course-lesson-title").focus({ preventScroll: true });
+}
+
+function closeCourseLesson() {
+  stopSpeech();
+  state.activeCourseLessonId = null;
+  els.courseLessonPanel.hidden = true;
+  els.courseLessonPanel.replaceChildren();
+
+  if (state.lastCourseLessonTrigger) {
+    state.lastCourseLessonTrigger.focus();
+  }
+}
+
+function renderCourseLesson() {
+  const match = findLessonById(state.activeCourseLessonId);
+  els.courseLessonPanel.replaceChildren();
+
+  if (!match) {
+    console.warn("Aula do curso guiado não encontrada.", state.activeCourseLessonId);
+    return;
+  }
+
+  const { lesson } = match;
+  const header = createElement("div", "course-lesson-header");
+  const titleGroup = createElement("div");
+  const title = createElement("h3", "", lesson.title);
+  title.id = "course-lesson-title";
+  title.tabIndex = -1;
+  titleGroup.append(
+    createElement("p", "lesson-order", `Aula ${lesson.order}`),
+    title,
+    createElement("p", "lesson-objective", lesson.objective),
+    createElement(
+      "p",
+      "lesson-meta",
+      `${lesson.phraseIds.length} frases · ${lesson.dialogueIds.length} diálogos`
+    )
+  );
+  header.append(
+    titleGroup,
+    createButton("Fechar aula", "ghost-button", closeCourseLesson, `Fechar aula ${lesson.title}`)
+  );
+
+  const phraseSection = createElement("section", "lesson-content-section");
+  phraseSection.append(createElement("h4", "lesson-section-title", "Frases da aula"));
+  const phraseList = createElement("div", "lesson-phrase-list");
+  lesson.phraseIds.forEach((phraseId) => {
+    const phrase = phraseById.get(phraseId);
+    if (!phrase) {
+      console.warn("Frase do curso guiado não encontrada.", phraseId);
+      return;
+    }
+    phraseList.append(renderLessonPhrase(phrase));
+  });
+  phraseSection.append(phraseList);
+
+  const dialogueSection = createElement("section", "lesson-content-section");
+  dialogueSection.append(createElement("h4", "lesson-section-title", "Diálogos da aula"));
+  const dialogueList = createElement("div", "lesson-dialogue-list");
+  lesson.dialogueIds.forEach((dialogueId) => {
+    const dialogue = dialogueById.get(dialogueId);
+    if (!dialogue) {
+      console.warn("Diálogo do curso guiado não encontrado.", dialogueId);
+      return;
+    }
+    dialogueList.append(renderLessonDialogue(dialogue));
+  });
+  dialogueSection.append(dialogueList);
+
+  els.courseLessonPanel.append(header, phraseSection, dialogueSection);
+}
+
+function renderLessonPhrase(phrase) {
+  const article = createElement("article", "lesson-phrase-card");
+  article.append(
+    createElement("p", "phrase-english", phrase.english),
+    createElement("p", "translation", phrase.portuguese),
+    createElement("p", "study-pronunciation", phrase.pronunciationPtBr),
+    createAudioControls(phrase.english)
+  );
+  return article;
+}
+
+function renderLessonDialogue(dialogue) {
+  const article = createElement("article", "lesson-dialogue-card");
+  article.append(createElement("h5", "lesson-dialogue-title", dialogue.title));
+
+  if (dialogue.context) {
+    article.append(createElement("p", "dialogue-translation", dialogue.context));
+  }
+
+  const lines = createElement("div", "lesson-dialogue-lines");
+  dialogue.lines.forEach((line) => {
+    const item = createElement("div", "lesson-dialogue-line");
+    const textGroup = createElement("div");
+    textGroup.append(
+      createElement("strong", "", line.speaker),
+      createElement("p", "dialogue-english", line.english)
+    );
+
+    if (line.portuguese) {
+      textGroup.append(createElement("p", "dialogue-translation", line.portuguese));
+    }
+
+    item.append(textGroup);
+    lines.append(item);
+  });
+
+  article.append(lines);
+  return article;
 }
 
 async function playText(text, rate, button) {
@@ -497,6 +677,7 @@ function closeStudyMode() {
 
 async function init() {
   renderCategoryOptions();
+  renderCourseCatalog();
   bindEvents();
   render();
   renderDialogues();
