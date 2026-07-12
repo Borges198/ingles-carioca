@@ -77,3 +77,19 @@ Consulta livre
 - Conclusão de aulas.
 - Revisão pedagógica por uso real.
 - Expansão gradual do percurso.
+
+## Publicação estática
+
+Gere o diretório de publicação com:
+
+```bash
+bash scripts/build-static.sh
+```
+
+O diretório a ser publicado é:
+
+```text
+dist/
+```
+
+A produção futura usará a branch `main`. A branch `expansao-viagens-hotel` permanece como ambiente de desenvolvimento. A aplicação continua estática, sem banco de dados e sem backend.
