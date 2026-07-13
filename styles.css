@@ -409,6 +409,19 @@ select {
   background: var(--accent-strong);
 }
 
+.primary-action:disabled,
+.primary-action[aria-disabled="true"] {
+  cursor: not-allowed;
+  background: var(--surface-soft);
+  color: var(--muted);
+  border-color: var(--border);
+}
+
+.primary-action:disabled:hover,
+.primary-action[aria-disabled="true"]:hover {
+  background: var(--surface-soft);
+}
+
 .secondary-button,
 .ghost-button,
 .expand-button {

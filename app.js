@@ -7,6 +7,8 @@ import { isSpeechSupported, loadVoices, speak, stopSpeech } from "./js/speech.js
 const reconciledStorage = reconcileStoredIds(phrases.map((phrase) => phrase.id));
 const phraseById = new Map(phrases.map((phrase) => [phrase.id, phrase]));
 const dialogueById = new Map(dialogues.map((dialogue) => [dialogue.id, dialogue]));
+const quickPracticeStartMessage =
+  "Escolha uma pesquisa, categoria ou status para começar a prática.";
 
 const state = {
   query: "",
@@ -92,6 +94,14 @@ function buildSearchText(phrase) {
   );
 }
 
+function hasActiveQuickPracticeCriteria() {
+  return (
+    state.query.trim() !== "" ||
+    state.category !== "Todas" ||
+    state.studyFilter !== "all"
+  );
+}
+
 function getFilteredPhrases() {
   const query = normalize(state.query.trim());
 
@@ -108,6 +118,25 @@ function getFilteredPhrases() {
 
     return matchesQuery && matchesCategory && matchesStudy;
   });
+}
+
+function getQuickPracticePhrases() {
+  if (!hasActiveQuickPracticeCriteria()) return [];
+  return getFilteredPhrases();
+}
+
+function updateStudyModeButton(filtered) {
+  const canOpenStudyMode = hasActiveQuickPracticeCriteria() && filtered.length > 0;
+  els.openStudyMode.disabled = !canOpenStudyMode;
+  els.openStudyMode.setAttribute("aria-disabled", String(!canOpenStudyMode));
+  els.openStudyMode.title = canOpenStudyMode
+    ? "Abrir modo de estudo com as frases filtradas"
+    : "Escolha uma pesquisa, categoria ou status com resultados para abrir o modo de estudo";
+
+  if (!canOpenStudyMode && state.studyModeOpen) {
+    state.studyModeOpen = false;
+    state.studyTranslationVisible = false;
+  }
 }
 
 function updateProgress() {
@@ -490,8 +519,16 @@ function createPhraseCard(phrase) {
 }
 
 function renderPhrases() {
-  const filtered = getFilteredPhrases();
+  const hasCriteria = hasActiveQuickPracticeCriteria();
+  const filtered = getQuickPracticePhrases();
   els.phraseList.replaceChildren();
+  updateStudyModeButton(filtered);
+
+  if (!hasCriteria) {
+    els.resultsMessage.textContent = "";
+    els.phraseList.append(createElement("p", "empty-state", quickPracticeStartMessage));
+    return;
+  }
 
   els.resultsMessage.textContent = `${filtered.length} de ${phrases.length} frases encontradas.`;
 
@@ -553,7 +590,7 @@ function renderDialogues() {
 }
 
 function getStudyPhrases() {
-  return phrases.filter((phrase) => state.category === "Todas" || phrase.category === state.category);
+  return getQuickPracticePhrases();
 }
 
 function renderStudyMode() {
@@ -563,7 +600,7 @@ function renderStudyMode() {
 
   const list = getStudyPhrases();
   if (!list.length) {
-    els.studyCard.append(createElement("p", "empty-state", "Nenhuma frase disponível para esta categoria."));
+    els.studyMode.hidden = true;
     return;
   }
 
@@ -632,7 +669,8 @@ function render() {
 function bindEvents() {
   els.search.addEventListener("input", (event) => {
     state.query = event.target.value;
-    renderPhrases();
+    state.studyIndex = 0;
+    render();
   });
 
   els.category.addEventListener("change", (event) => {
@@ -643,10 +681,12 @@ function bindEvents() {
 
   els.studyFilter.addEventListener("change", (event) => {
     state.studyFilter = event.target.value;
-    renderPhrases();
+    state.studyIndex = 0;
+    render();
   });
 
   els.openStudyMode.addEventListener("click", (event) => {
+    if (els.openStudyMode.disabled) return;
     state.lastStudyTrigger = event.currentTarget;
     state.studyModeOpen = true;
     state.studyTranslationVisible = false;
