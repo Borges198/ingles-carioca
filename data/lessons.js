@@ -62,6 +62,63 @@ export const courseLevels = [
           "hotel-check-in",
           "hotel-check-in-expanded"
         ]
+      },
+      {
+        id: "lesson-essential-questions",
+        title: "Perguntas e informações básicas",
+        objective: "Fazer perguntas simples para obter informações pessoais e cotidianas.",
+        order: 4,
+        phraseIds: [
+          "questions-can-i-ask-question",
+          "greetings-where-do-you-live",
+          "greetings-what-do-you-do",
+          "questions-is-that-right",
+          "questions-what-are-you-doing",
+          "questions-what-do-you-think",
+          "questions-can-you-show-me",
+          "questions-can-you-give-example"
+        ],
+        dialogueIds: []
+      },
+      {
+        id: "lesson-daily-routine-simple-talk",
+        title: "Rotina e conversas simples",
+        objective: "Falar sobre ações do dia a dia, reagir em conversas curtas e encerrar uma interação.",
+        order: 5,
+        phraseIds: [
+          "routine-i-wake-up-early",
+          "routine-i-go-to-work",
+          "questions-what-are-you-doing",
+          "casual-really",
+          "casual-thats-right",
+          "casual-thats-fine",
+          "routine-i-need-to-go-now",
+          "greetings-see-you-later",
+          "casual-see-you-tomorrow"
+        ],
+        dialogueIds: []
+      },
+      {
+        id: "lesson-restaurant",
+        title: "Restaurante",
+        objective: "Pedir o cardápio, escolher uma refeição, informar restrições e realizar o pagamento.",
+        order: 6,
+        phraseIds: [
+          "restaurant-can-we-have-menu",
+          "restaurant-what-do-you-recommend",
+          "restaurant-like-to-order",
+          "restaurant-ill-have-chicken",
+          "restaurant-have-seafood",
+          "restaurant-allergic-seafood",
+          "restaurant-food-delicious",
+          "restaurant-bill-please",
+          "restaurant-split-bill",
+          "restaurant-pay-by-card"
+        ],
+        dialogueIds: [
+          "ordering-food",
+          "restaurant-ordering-meal"
+        ]
       }
     ]
   }
