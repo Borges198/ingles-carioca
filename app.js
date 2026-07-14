@@ -358,7 +358,7 @@ function createAudioControls(text) {
       playText(text, 1, event.currentTarget);
     }, `Ouvir em velocidade normal: ${text}`),
     createButton("Ouvir devagar", "secondary-button", (event) => {
-      playText(text, 0.75, event.currentTarget);
+      playText(text, 0.6, event.currentTarget);
     }, `Ouvir devagar: ${text}`)
   );
   return wrapper;
