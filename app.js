@@ -281,20 +281,25 @@ function renderCourseLesson() {
   });
   phraseSection.append(phraseList);
 
-  const dialogueSection = createElement("section", "lesson-content-section");
-  dialogueSection.append(createElement("h4", "lesson-section-title", "Diálogos da aula"));
-  const dialogueList = createElement("div", "lesson-dialogue-list");
-  lesson.dialogueIds.forEach((dialogueId) => {
-    const dialogue = dialogueById.get(dialogueId);
-    if (!dialogue) {
-      console.warn("Diálogo do curso guiado não encontrado.", dialogueId);
-      return;
-    }
-    dialogueList.append(renderLessonDialogue(dialogue));
-  });
-  dialogueSection.append(dialogueList);
+  const lessonSections = [header, phraseSection];
 
-  els.courseLessonPanel.append(header, phraseSection, dialogueSection);
+  if (lesson.dialogueIds.length > 0) {
+    const dialogueSection = createElement("section", "lesson-content-section");
+    dialogueSection.append(createElement("h4", "lesson-section-title", "Diálogos da aula"));
+    const dialogueList = createElement("div", "lesson-dialogue-list");
+    lesson.dialogueIds.forEach((dialogueId) => {
+      const dialogue = dialogueById.get(dialogueId);
+      if (!dialogue) {
+        console.warn("Diálogo do curso guiado não encontrado.", dialogueId);
+        return;
+      }
+      dialogueList.append(renderLessonDialogue(dialogue));
+    });
+    dialogueSection.append(dialogueList);
+    lessonSections.push(dialogueSection);
+  }
+
+  els.courseLessonPanel.append(...lessonSections);
 }
 
 function renderLessonPhrase(phrase) {

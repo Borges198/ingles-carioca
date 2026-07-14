@@ -119,6 +119,60 @@ export const courseLevels = [
           "ordering-food",
           "restaurant-ordering-meal"
         ]
+      },
+      {
+        id: "lesson-basic-directions",
+        title: "Direções básicas",
+        objective: "Perguntar caminhos, entender distância e reconhecer instruções simples de direção.",
+        order: 7,
+        phraseIds: [
+          "directions-where-is-the-bathroom",
+          "directions-how-do-i-get-there",
+          "directions-is-it-close",
+          "directions-is-it-far-from-here",
+          "directions-go-straight",
+          "directions-turn-left",
+          "directions-turn-right"
+        ],
+        dialogueIds: [
+          "asking-directions"
+        ]
+      },
+      {
+        id: "lesson-airport-transport",
+        title: "Aeroporto e transporte",
+        objective: "Confirmar informações de voo e pedir transporte em situações de deslocamento.",
+        order: 8,
+        phraseIds: [
+          "directions-where-is-the-airport",
+          "directions-get-to-airport",
+          "travel-flight-leave-time",
+          "travel-flight-arrive-time",
+          "travel-how-long-flight",
+          "directions-right-bus",
+          "directions-get-a-taxi",
+          "directions-take-me-address"
+        ],
+        dialogueIds: [
+          "airport-flight-information"
+        ]
+      },
+      {
+        id: "lesson-hotel-room-problems-checkout",
+        title: "Hotel: quarto, problemas e saída",
+        objective: "Pedir um quarto, solicitar preferências, comunicar problemas e fazer check-out.",
+        order: 9,
+        phraseIds: [
+          "hotel-id-like-a-room",
+          "hotel-any-vacancies",
+          "hotel-room-two-nights",
+          "hotel-non-smoking-room",
+          "hotel-air-conditioning-not-working",
+          "hotel-send-someone-room",
+          "hotel-leave-luggage-here",
+          "hotel-check-out"
+        ],
+        dialogueIds: []
       }
     ]
   }
