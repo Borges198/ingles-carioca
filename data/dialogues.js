@@ -318,16 +318,6 @@ export const dialogues = [
         portuguese: "Eu gostaria de fazer o pedido."
       },
       {
-        speaker: "Server",
-        english: "What would you like?",
-        portuguese: "O que você gostaria?"
-      },
-      {
-        speaker: "Traveler",
-        english: "I'll have the chicken.",
-        portuguese: "Eu vou querer o frango."
-      },
-      {
         speaker: "Traveler",
         english: "I'm allergic to seafood.",
         portuguese: "Sou alérgico a frutos do mar."
@@ -336,6 +326,16 @@ export const dialogues = [
         speaker: "Server",
         english: "Thanks for telling me. I'll check with the kitchen.",
         portuguese: "Obrigado por avisar. Vou verificar com a cozinha."
+      },
+      {
+        speaker: "Server",
+        english: "What would you like?",
+        portuguese: "O que você gostaria?"
+      },
+      {
+        speaker: "Traveler",
+        english: "I'll have the chicken.",
+        portuguese: "Eu vou querer o frango."
       }
     ]
   }
